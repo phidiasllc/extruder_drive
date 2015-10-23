@@ -52,7 +52,9 @@ module render_part(part_to_render) {
 			t_feet = t_feet,
 			t_base = t_base,
 			offset_filament = offset_filament,
-			quick_release = true);
+			quick_release = true,
+			short_feed = false
+		);
 	}
 
 	if (part_to_render == 2) extruder_idler_608z();

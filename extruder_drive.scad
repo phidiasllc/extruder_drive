@@ -94,7 +94,8 @@ module drive_body(
 	d_filament,
 	t_feet,
 	t_base,
-	quick_release = false) {
+	quick_release = false,
+	short_feed = false) {
 	r_mounts = r_mounts(cc_NEMA17_mount);
 
 	difference() {
@@ -144,7 +145,9 @@ module drive_body(
 					d_sheath = d_sheath,
 					d_filament = d_filament,
 					offset_filament = offset_filament,
-					quick_release = quick_release);
+					quick_release = quick_release,
+					short_feed = short_feed
+				);
 
 			// M3 Screw columns for stepper attachment
 			for (i = [-1, 1])
@@ -222,6 +225,7 @@ module bearing_housing_relief() {
 	}
 }
 
+//short_feed replaces the infeed tube opening with a conical opening suited for feeding short pieces of filament sequentially
 module filament_path(
 	d_retainer,
 	h_retainer,
@@ -229,7 +233,7 @@ module filament_path(
 	d_filament,
 	offset_filament,
 	quick_release = false,
-	gravity_feed = true) {
+	short_feed = false) {
 		difference() {
 			union() {
 				translate([offset_filament, 0, 13])
@@ -272,7 +276,7 @@ module filament_path(
 					rotate([90,0,0])
 						cylinder(r = d_filament / 2, h = 60, $fn=25, center = true);
 
-					if (gravity_feed) {
+					if (short_feed) {
 						translate([offset_filament, -4, 5.5 + z_bearing])
 							rotate([90, 0, 0])
 								hull() {
@@ -313,7 +317,7 @@ module filament_path(
 							}
 				}
 				else
-					// m4 nut slots
+					// retainer nut slots
 					for (j = [-1, 1])
 						translate([offset_filament, j * 25.25, 5.5 + z_bearing])
 							rotate([90, 0, 0]) {
